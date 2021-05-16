@@ -2,3 +2,5 @@
 venv/
 firebase_config.json
 config.json
+/recordings
+.vscode/
