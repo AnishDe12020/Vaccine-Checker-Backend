@@ -19,20 +19,26 @@ dates = [todays_date + timedelta(days=i+1) for i in range(days_to_check_for)]
 dates = [i.strftime("%d-%m-%Y") for i in dates]
 
 
+# def get_pincodes():
+#     data = ref.get()
+#     # print(data)
+#     pinCodes = []
+#     phoneNumbers = []
+#     for entry in data.keys():
+#         k = data.get(entry)
+#         pinCodes.append(entry)
+#         phoneNumbers.append(k)
+#     uniquePinCodes = list(set(pinCodes))
+#     return pinCodes, phoneNumbers, uniquePinCodes, data
+
 def get_pincodes():
-    data = ref.get()
-    # print(data)
-    pinCodes = []
-    phoneNumbers = []
-    for entry in data.keys():
-        k = data.get(entry)
-        pinCodes.append(entry)
-        phoneNumbers.append(k)
-    uniquePinCodes = list(set(pinCodes))
-    return pinCodes, phoneNumbers, uniquePinCodes, data
+    uniquePinCodes = ref.get()
+    return uniquePinCodes 
+
+get_pincodes()
 
 while True:
-    pinCodes, phoneNumbers, uniquePinCodes, data = get_pincodes()
+    uniquePinCodes = get_pincodes()
 
     for pinCode in uniquePinCodes:
         for date in dates:
@@ -79,9 +85,12 @@ while True:
 
                                     associatedPhoneNumbers = []
 
-                                    for i in data.keys():
+                                    for i in uniquePinCodes.keys():
                                         if i == pinCode:
-                                            associatedPhoneNumbers.append(data.get(i))
+                                            for phoneNumber in uniquePinCodes.get(i).keys():
+                                                associatedPhoneNumbers.append(phoneNumber)
+
+                                    print(associatedPhoneNumbers)
 
                                     filename = "_".join(associatedPhoneNumbers)
                                     filename = "./recordings/" + filename + ".mp3"
