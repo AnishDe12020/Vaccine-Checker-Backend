@@ -4,3 +4,4 @@ firebase_config.json
 config.json
 /recordings
 .vscode/
+__pycache__/
