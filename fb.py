@@ -1,5 +1,6 @@
 import firebase_admin
-from firebase_admin import db
+from firebase_admin import firestore
+from firebase_admin import credentials
 from dotenv import load_dotenv
 import os
 import json
@@ -13,13 +14,14 @@ except:
 
 load_dotenv()
 
-cred_obj = firebase_admin.credentials.Certificate('firebase_config.json')
-default_app = firebase_admin.initialize_app(cred_obj, {
-	'databaseURL':os.getenv("FIREBASE_DATABASE_URL") or FIREBASE_DATABASE_URL
-})
+cred_obj = credentials.Certificate('firebase_config.json')
+firebase_admin.initialize_app(cred_obj)
 
-ref = db.reference("users")
+db = firestore.client()
+
+data_ref = db.collection(u'data')
+data_docs = data_ref.stream()
 
 if __name__ == "__main__":
-    values = ref.get()
-    print(type(values))
+    for doc in data_docs:
+        print(u'{} => {}'.format(doc.id, doc.to_dict()))
